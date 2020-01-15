@@ -1,0 +1,3 @@
+const queen = arr => {
+    
+}
