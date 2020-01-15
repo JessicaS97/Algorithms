@@ -1,4 +1,7 @@
 /**
+ * 
+ * Given a collection of intervals, merge all overlapping intervals.
+ * 
  * @param {number[][]} intervals
  * @return {number[][]}
  */
