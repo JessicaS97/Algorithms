@@ -4,31 +4,39 @@
  * @return {number[]}
  */
 var findOrder = function(numCourses, prerequisites) {
-    
-    const topSort = courses => {
-        let stack = []
-        let seen = new Set()
-        for (let course of courses) {
-            if (seen.has(course)) continue
-            topSortHelper(course, stack, seen, courses)
-        }
-        return stack
+    const seen = new Set();
+  const seeing = new Set();
+  const res = [];
+  
+  const adj = [...Array(numCourses)].map(r => []);
+  for (let [u, v] of prerequisites) {
+    adj[v].push(u);
+  }
+  
+  for (let c = 0; c < numCourses; c++) {
+    if (!dfs(c)) {
+      return [];
+    }
+  }
+  return res.reverse();
+  
+  function dfs(v) {
+    if (seen.has(v)) {
+      return true;
+    }
+    if (seeing.has(v)) {
+      return false;
     }
     
-    const topSortHelper = (course, stack, seen, adj) => {
-        seen.add(course)
-        for (let child of adj[course]) {
-            if (seen.has(child)) continue
-            topSortHelper(child, stack, seen, adj)
-        }
-        stack.push(course)
+    seeing.add(v);
+    for (let nv of adj[v]) {
+      if (!dfs(nv)) {
+        return false;
+      }
     }
-    
-    
-    let adj = [...Array(numCourses)].map(() => [])
-    
-    for (let [u,v] of prerequisites) {
-        adj[v].push(u)
-    }
-    return topSort(adj)
+    seeing.delete(v);
+    seen.add(v);
+    res.push(v);
+    return true;
+  }
 };
